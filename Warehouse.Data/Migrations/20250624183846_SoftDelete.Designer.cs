@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Warehouse.Data;
 
@@ -11,9 +12,11 @@ using Warehouse.Data;
 namespace Warehouse.Data.Migrations
 {
     [DbContext(typeof(WarehouseContext))]
-    partial class WarehouseContextModelSnapshot : ModelSnapshot
+    [Migration("20250624183846_SoftDelete")]
+    partial class SoftDelete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,8 +71,8 @@ namespace Warehouse.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("PriceInHungarianForints")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("PriceInHungarianForints")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -90,10 +93,7 @@ namespace Warehouse.Data.Migrations
                     b.Property<Guid>("ComponentCatalogNumber")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("ComponentId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ComponentTypeId")
+                    b.Property<int>("ComponentId")
                         .HasColumnType("int");
 
                     b.Property<int>("Direction")
@@ -106,15 +106,13 @@ namespace Warehouse.Data.Migrations
 
                     b.HasIndex("ComponentId");
 
-                    b.HasIndex("ComponentTypeId");
-
                     b.ToTable("StateChanges");
                 });
 
             modelBuilder.Entity("Warehouse.Data.Model.BuildingComponent", b =>
                 {
                     b.HasOne("Warehouse.Data.Model.BuildingComponentType", "ComponentType")
-                        .WithMany("Components")
+                        .WithMany()
                         .HasForeignKey("ComponentTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -126,20 +124,11 @@ namespace Warehouse.Data.Migrations
                 {
                     b.HasOne("Warehouse.Data.Model.BuildingComponent", "Component")
                         .WithMany()
-                        .HasForeignKey("ComponentId");
-
-                    b.HasOne("Warehouse.Data.Model.BuildingComponentType", "ComponentType")
-                        .WithMany()
-                        .HasForeignKey("ComponentTypeId");
+                        .HasForeignKey("ComponentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Component");
-
-                    b.Navigation("ComponentType");
-                });
-
-            modelBuilder.Entity("Warehouse.Data.Model.BuildingComponentType", b =>
-                {
-                    b.Navigation("Components");
                 });
 #pragma warning restore 612, 618
         }

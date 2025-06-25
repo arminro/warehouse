@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Warehouse.Data;
 
@@ -11,9 +12,11 @@ using Warehouse.Data;
 namespace Warehouse.Data.Migrations
 {
     [DbContext(typeof(WarehouseContext))]
-    partial class WarehouseContextModelSnapshot : ModelSnapshot
+    [Migration("20250624124859_DateTimeOffsetInStateChanges")]
+    partial class DateTimeOffsetInStateChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,9 +39,6 @@ namespace Warehouse.Data.Migrations
                     b.Property<int>("ComponentTypeId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ComponentTypeId");
@@ -58,9 +58,6 @@ namespace Warehouse.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<float>("MassInGrams")
                         .HasColumnType("real");
 
@@ -68,8 +65,8 @@ namespace Warehouse.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("PriceInHungarianForints")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("PriceInHungarianForints")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -87,26 +84,15 @@ namespace Warehouse.Data.Migrations
                     b.Property<DateTimeOffset>("ChangeTimestamp")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid>("ComponentCatalogNumber")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int?>("ComponentId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ComponentTypeId")
+                    b.Property<int>("ComponentId")
                         .HasColumnType("int");
 
                     b.Property<int>("Direction")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ComponentId");
-
-                    b.HasIndex("ComponentTypeId");
 
                     b.ToTable("StateChanges");
                 });
@@ -114,7 +100,7 @@ namespace Warehouse.Data.Migrations
             modelBuilder.Entity("Warehouse.Data.Model.BuildingComponent", b =>
                 {
                     b.HasOne("Warehouse.Data.Model.BuildingComponentType", "ComponentType")
-                        .WithMany("Components")
+                        .WithMany()
                         .HasForeignKey("ComponentTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -126,20 +112,11 @@ namespace Warehouse.Data.Migrations
                 {
                     b.HasOne("Warehouse.Data.Model.BuildingComponent", "Component")
                         .WithMany()
-                        .HasForeignKey("ComponentId");
-
-                    b.HasOne("Warehouse.Data.Model.BuildingComponentType", "ComponentType")
-                        .WithMany()
-                        .HasForeignKey("ComponentTypeId");
+                        .HasForeignKey("ComponentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Component");
-
-                    b.Navigation("ComponentType");
-                });
-
-            modelBuilder.Entity("Warehouse.Data.Model.BuildingComponentType", b =>
-                {
-                    b.Navigation("Components");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,20 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Warehouse.Data.Infrastructure;
+﻿using Warehouse.Data.Infrastructure;
 
 namespace Warehouse.Data.Model
 {
     public class BuildingComponent : DbEntity
     {
-        [Required]
-        public string Name { get; set; }
+        public int ComponentTypeId { get; set; }
+        public BuildingComponentType ComponentType { get; set; }
 
-        [Required]
-        public int PriceInHungarianForints { get; set; }
-
-        [Required]
-        public string Description { get; set; }
-
-        [Required]
-        public float MassInGrams { get; set; }
+        public Guid CatalogNumber { get; set; }
     }
 }

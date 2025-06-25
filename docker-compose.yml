@@ -1,0 +1,6 @@
+services:
+  warehouse.api:
+    image: ${DOCKER_REGISTRY-}warehouseapi
+    build:
+      context: .
+      dockerfile: Warehouse.API/Dockerfile

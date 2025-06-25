@@ -15,4 +15,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Warehouse.Common\Warehouse.Common.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Warehouse.Data;
 
@@ -11,9 +12,11 @@ using Warehouse.Data;
 namespace Warehouse.Data.Migrations
 {
     [DbContext(typeof(WarehouseContext))]
-    partial class WarehouseContextModelSnapshot : ModelSnapshot
+    [Migration("20250624204150_WarehouseStateDeletedElementReferenceOptional")]
+    partial class WarehouseStateDeletedElementReferenceOptional
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,8 +71,8 @@ namespace Warehouse.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("PriceInHungarianForints")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("PriceInHungarianForints")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -114,7 +117,7 @@ namespace Warehouse.Data.Migrations
             modelBuilder.Entity("Warehouse.Data.Model.BuildingComponent", b =>
                 {
                     b.HasOne("Warehouse.Data.Model.BuildingComponentType", "ComponentType")
-                        .WithMany("Components")
+                        .WithMany()
                         .HasForeignKey("ComponentTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -135,11 +138,6 @@ namespace Warehouse.Data.Migrations
                     b.Navigation("Component");
 
                     b.Navigation("ComponentType");
-                });
-
-            modelBuilder.Entity("Warehouse.Data.Model.BuildingComponentType", b =>
-                {
-                    b.Navigation("Components");
                 });
 #pragma warning restore 612, 618
         }
