@@ -1,4 +1,5 @@
-﻿using Warehouse.Service.DTO;
+﻿using Warehouse.Data.Model;
+using Warehouse.Service.DTO;
 
 namespace Warehouse.Service.Interfaces
 {
@@ -7,8 +8,8 @@ namespace Warehouse.Service.Interfaces
     /// </summary>
     public interface IWarehouseStateChangeService
     {
-        Task<IReadOnlyCollection<WarehouseStateChangeResponseDto>> GetAllOutgoingAsync(int pageNumber = 1, int pageSize = 10);
+        Task<CollectionDto<WarehouseStateChangeResponseDto>> GetAllOutgoingAsync(int pageNumber = 1, int pageSize = 10);
 
-        Task<IReadOnlyCollection<WarehouseStateChangeResponseDto>> GetAllIncomingAsync(int pageNumber = 1, int pageSize = 10);
+        Task<CollectionDto<WarehouseStateChangeResponseDto>> GetAllIncomingAsync(int pageNumber = 1, int pageSize = 10);
     }
 }

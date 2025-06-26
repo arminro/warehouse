@@ -64,7 +64,7 @@ namespace Warehouse.Service.Implementations
         }
 
 
-        public async Task<IReadOnlyCollection<BuildingComponentDto>> GetPaginatedListAsync(int pageNumber = 1, int pageSize = 10)
+        public async Task<CollectionDto<BuildingComponentDto>> GetPaginatedListAsync(int pageNumber = 1, int pageSize = 10)
         {
             var entries = await _repository.GetMultipleReadOnly()
                 .Include(e => e.ComponentType)
@@ -72,10 +72,17 @@ namespace Warehouse.Service.Implementations
                 .Select(e => _buildingComponentMapper.Map(e))
                 .ToListAsync();
 
-            return entries.AsReadOnly();
+            int total = await _repository.GetMultipleReadOnly()
+               .CountAsync();
+
+            return new CollectionDto<BuildingComponentDto>()
+            {
+                Payload = entries.AsReadOnly(),
+                TotalNumber = total
+            };
         }
 
-        async Task<IReadOnlyCollection<BuildingComponentTypeDto>> ISimpleWarehouseService<BuildingComponentTypeDto>.GetPaginatedListAsync(int pageNumber, int pageSize)
+        async Task<CollectionDto<BuildingComponentTypeDto>> ISimpleWarehouseService<BuildingComponentTypeDto>.GetPaginatedListAsync(int pageNumber, int pageSize)
         {
             var rates = await _currencyExchangeService
                .GetExchangeRatesAsync();
@@ -90,7 +97,14 @@ namespace Warehouse.Service.Implementations
 
             entries.ForEach(e => e.PriceInEuros = e.PriceInHungarianForints * rate);
 
-            return entries.AsReadOnly();
+            int total = await _componentTypeRepository.GetMultipleReadOnly()
+                .CountAsync();
+
+            return new CollectionDto<BuildingComponentTypeDto>()
+            {
+                Payload = entries.AsReadOnly(),
+                TotalNumber = total
+            };
         }
 
         public async Task<BuildingComponentDto> UpdateAsync(BuildingComponentDto model)

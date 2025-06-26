@@ -14,20 +14,28 @@ namespace Warehouse.Service.Implementations
         private readonly IRepository<WarehouseStateChange> _repository = repository;
         private readonly IBusinessModelToEntityModelMapper<WarehouseStateChangeResponseDto, WarehouseStateChange> _mapper = mapper;
 
-        public async Task<IReadOnlyCollection<WarehouseStateChangeResponseDto>> GetAllIncomingAsync(int pageNumber = 1, int pageSize = 10)
+        public async Task<CollectionDto<WarehouseStateChangeResponseDto>> GetAllIncomingAsync(int pageNumber = 1, int pageSize = 10)
         {
             var entries = await _repository.GetMultipleReadOnly()
                 .Include(sc => sc.Component)
                 .Include(sc => sc.ComponentType)
+                .IgnoreQueryFilters()
                 .Where(sc => sc.Direction == StateChangeDirection.In)
                 .Paginate(pageNumber, pageSize)
                 .Select(e => _mapper.Map(e))
                 .ToListAsync();
 
-            return entries.AsReadOnly();
+            int total = await _repository.GetMultipleReadOnly()
+               .CountAsync();
+
+            return new CollectionDto<WarehouseStateChangeResponseDto>()
+            {
+                Payload = entries.AsReadOnly(),
+                TotalNumber = total
+            };
         }
 
-        public async Task<IReadOnlyCollection<WarehouseStateChangeResponseDto>> GetAllOutgoingAsync(int pageNumber = 1, int pageSize = 10)
+        public async Task<CollectionDto<WarehouseStateChangeResponseDto>> GetAllOutgoingAsync(int pageNumber = 1, int pageSize = 10)
         {
             var entries = await _repository.GetMultipleReadOnly()
                .Include(sc => sc.Component)
@@ -38,7 +46,14 @@ namespace Warehouse.Service.Implementations
                .Select(e => _mapper.Map(e))
                .ToListAsync();
 
-            return entries.AsReadOnly();
+            int total = await _repository.GetMultipleReadOnly()
+              .CountAsync();
+
+            return new CollectionDto<WarehouseStateChangeResponseDto>()
+            {
+                Payload = entries.AsReadOnly(),
+                TotalNumber = total
+            };
         }
 
     }

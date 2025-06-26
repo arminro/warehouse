@@ -19,8 +19,8 @@ namespace Warehouse.Data
             // https://learn.microsoft.com/en-us/ef/core/querying/filters#limitations
 
 
-            //modelBuilder.Entity<BuildingComponentType>()
-            //    .Navigation(x => x.Components).AutoInclude();
+            modelBuilder.Entity<BuildingComponentType>()
+                .Navigation(x => x.Components).AutoInclude();
 
             modelBuilder.Entity<BuildingComponentType>()
                 .HasQueryFilter(bct => !bct.IsDeleted);

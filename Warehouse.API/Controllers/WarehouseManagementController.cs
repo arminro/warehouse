@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Warehouse.Data.Model;
 using Warehouse.Service.DTO;
 using Warehouse.Service.Interfaces;
 
@@ -17,7 +18,7 @@ namespace Warehouse.API.Controllers
         private readonly IWarehouseStatisticsService _statService = statService;
         private readonly IWarehouseStateChangeService _stateService = stateService;
 
-        [HttpPost("componenttype/new")]
+        [HttpPost("component-type/new")]
         public async Task AddComponent([FromBody] BuildingComponentTypeDto model)
         {
             await _componentTypeService
@@ -31,7 +32,7 @@ namespace Warehouse.API.Controllers
                 .AddAsync(model);
         }
 
-        [HttpPut("componenttype/change")]
+        [HttpPut("component-type/change")]
         public async Task<BuildingComponentTypeDto> UpdateComponent([FromBody] BuildingComponentTypeDto model)
         {
             return await _componentTypeService
@@ -39,24 +40,24 @@ namespace Warehouse.API.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<IReadOnlyCollection<BuildingComponentTypeDto>> GetAll([FromQuery] int pageNumber, [FromQuery] int pageSize)
+        public async Task<CollectionDto<BuildingComponentTypeDto>> GetAll([FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
             return await _componentTypeService
               .GetPaginatedListAsync(pageNumber, pageSize);
         }
 
-        [HttpDelete("delete-component/soft")]
-        public async Task SoftDelete([FromQuery] int idToDeletee)
+        [HttpDelete("component/delete")]
+        public async Task SoftDelete([FromQuery] int id)
         {
             await _componentService
-              .SoftDeleteAsync(idToDeletee);
+              .SoftDeleteAsync(id);
         }
 
-        [HttpDelete("delete-componenttype/soft")]
-        public async Task SoftDeleteComponentType([FromQuery] int idToDeletee)
+        [HttpDelete("component-type/delete")]
+        public async Task SoftDeleteComponentType([FromQuery] int id)
         {
             await _componentTypeService
-              .SoftDeleteAsync(idToDeletee);
+              .SoftDeleteAsync(id);
         }
 
         [HttpGet("stat")]
@@ -67,14 +68,14 @@ namespace Warehouse.API.Controllers
         }
 
         [HttpGet("incoming")]
-        public async Task<IReadOnlyCollection<WarehouseStateChangeResponseDto>> GetWarehouseIncomingTransactions([FromQuery] int pageNumber, [FromQuery] int pageSize)
+        public async Task<CollectionDto<WarehouseStateChangeResponseDto>> GetWarehouseIncomingTransactions([FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
             return await _stateService
                 .GetAllIncomingAsync(pageNumber, pageSize);
         }
 
         [HttpGet("outgoing")]
-        public async Task<IReadOnlyCollection<WarehouseStateChangeResponseDto>> GetWarehouseOutgoingTransactions([FromQuery] int pageNumber, [FromQuery] int pageSize)
+        public async Task<CollectionDto<WarehouseStateChangeResponseDto>> GetWarehouseOutgoingTransactions([FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
             return await _stateService
                 .GetAllOutgoingAsync(pageNumber, pageSize);

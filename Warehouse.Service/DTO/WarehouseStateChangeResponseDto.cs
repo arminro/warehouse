@@ -4,6 +4,8 @@
     {
         public DateTimeOffset ChangeTimestamp { get; set; }
 
-        public object ChangedElement { get; set; }
+        public BuildingComponentDto? ComponentChanged { get; set; }
+
+        public BuildingComponentTypeDto? ComponentTypeChanged { get; set; }
     }
 }

@@ -29,13 +29,13 @@ namespace Warehouse.Service.Implementations
              .SumAsync(e => e.ComponentType.MassInGrams);
 
             var sumOfValue = await elements
-                .SumAsync(e => e.ComponentType.PriceInHungarianForints);
+                .SumAsync(e => e.ComponentType.PriceInHungarianForints * e.ComponentType.Components.Count());
 
             var componentTypeGrouping = elements
                 .GroupBy(e => e.ComponentType);
 
 
-            var mostNumberousComponentType = await componentTypeGrouping
+            var mostNumerousComponentType = await componentTypeGrouping
                 .Select(g => new { g.Key, Count = g.Count() })
                 .OrderByDescending(g => g.Count)
                 .Select(g => g.Key)
@@ -47,19 +47,27 @@ namespace Warehouse.Service.Implementations
                 .Select(ct => ct.Key)
                 .FirstOrDefaultAsync();
 
+
+
             var rates = await _currencyExchangeService
               .GetExchangeRatesAsync();
 
             var rate = rates[EXCHANGED_CURRENCY];
 
+            var heaviest = _componentTypeMapper.Map(heaviestComponentType);
+            heaviest.PriceInEuros = heaviest.PriceInHungarianForints * rate;
+
+            var numerous = _componentTypeMapper.Map(mostNumerousComponentType);
+            numerous.PriceInEuros = numerous.PriceInHungarianForints * rate;
+
+
             return new WarehouseStatisticsResponseDto
             {
-                TotalMassInGramms = sumOfMass,
-                HeaviestProduct = _componentTypeMapper.Map(heaviestComponentType),
-                TotalValueInForints = sumOfValue,
+                TotalMassInGrams = sumOfMass,
+                HeaviestProduct = heaviest,
+                TotalValueInHungarianForints = sumOfValue,
                 TotalValueInEuros = sumOfValue * rate,
-                ProductWithLargestSum = _componentTypeMapper.Map(mostNumberousComponentType),
-
+                ProductWithLargestSum = numerous,
             };
         }
     }

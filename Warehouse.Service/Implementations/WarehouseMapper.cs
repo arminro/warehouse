@@ -73,7 +73,7 @@ namespace Warehouse.Service.Implementations
             {
                 CatalogId = entityModel.CatalogNumber,
                 ComponentId = entityModel.Id,
-                ComponentTypeId = entityModel.ComponentType.Id
+                ComponentTypeId = entityModel.ComponentTypeId
             };
         }
 
@@ -87,18 +87,9 @@ namespace Warehouse.Service.Implementations
             return new WarehouseStateChangeResponseDto
             {
                 ChangeTimestamp = entityModel.ChangeTimestamp,
-                ChangedElement = GetChangedElement(entityModel),
+                ComponentChanged = entityModel.Component is not null ? Map(entityModel.Component) : null,
+                ComponentTypeChanged = entityModel.ComponentType is not null ? Map(entityModel.ComponentType) : null,
             };
-        }
-
-        private object GetChangedElement(WarehouseStateChange entityModel)
-        {
-            if (entityModel.Component is not null)
-            {
-                return entityModel.Component;
-            }
-
-            return entityModel.ComponentType;
         }
     }
 }

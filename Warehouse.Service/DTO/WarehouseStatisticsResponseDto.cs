@@ -2,9 +2,9 @@
 {
     public class WarehouseStatisticsResponseDto
     {
-        public float TotalMassInGramms { get; set; }
+        public float TotalMassInGrams { get; set; }
 
-        public decimal TotalValueInForints { get; set; }
+        public decimal TotalValueInHungarianForints { get; set; }
 
         public decimal TotalValueInEuros { get; set; }
 
