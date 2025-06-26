@@ -9,11 +9,15 @@ namespace Warehouse.Service.Implementations
     public class WarehouseStatisticsService(
         IRepository<BuildingComponent> componentRepo,
         IRepository<BuildingComponentType> componentTypeRepo,
-        IBusinessModelToEntityModelMapper<BuildingComponentTypeDto, BuildingComponentType> componentTypeMapper) : IWarehouseStatisticsService
+        IBusinessModelToEntityModelMapper<BuildingComponentTypeDto, BuildingComponentType> componentTypeMapper,
+        ICurrencyExchangeService currencyExchangeService) : IWarehouseStatisticsService
     {
         private readonly IRepository<BuildingComponent> _componentRepo = componentRepo;
         private readonly IRepository<BuildingComponentType> _componentTypeRepo = componentTypeRepo;
         private readonly IBusinessModelToEntityModelMapper<BuildingComponentTypeDto, BuildingComponentType> _componentTypeMapper = componentTypeMapper;
+        private readonly ICurrencyExchangeService _currencyExchangeService = currencyExchangeService;
+
+        private const string EXCHANGED_CURRENCY = "EUR";
 
         public async Task<WarehouseStatisticsResponseDto> GetWarehouseStatisticsAsync()
         {
@@ -43,12 +47,19 @@ namespace Warehouse.Service.Implementations
                 .Select(ct => ct.Key)
                 .FirstOrDefaultAsync();
 
+            var rates = await _currencyExchangeService
+              .GetExchangeRatesAsync();
+
+            var rate = rates[EXCHANGED_CURRENCY];
+
             return new WarehouseStatisticsResponseDto
             {
                 TotalMassInGramms = sumOfMass,
                 HeaviestProduct = _componentTypeMapper.Map(heaviestComponentType),
                 TotalValueInForints = sumOfValue,
+                TotalValueInEuros = sumOfValue * rate,
                 ProductWithLargestSum = _componentTypeMapper.Map(mostNumberousComponentType),
+
             };
         }
     }

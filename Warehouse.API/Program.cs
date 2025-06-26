@@ -41,6 +41,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseSerilogRequestLogging();
 
+app.UseCors("Default");
+
 app.UseExceptionHandler("/error");
 
 app.UseHttpsRedirection();

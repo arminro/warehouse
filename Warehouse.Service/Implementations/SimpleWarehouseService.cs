@@ -83,6 +83,7 @@ namespace Warehouse.Service.Implementations
             var rate = rates[EXCHANGED_CURRENCY];
 
             var entries = await _componentTypeRepository.GetMultipleReadOnly()
+               .Include(ct => ct.Components)
                .Paginate(pageNumber, pageSize)
                .Select(e => _buildingComponentTypeMapper.Map(e))
                .ToListAsync();

@@ -61,6 +61,18 @@ namespace Warehouse.API.Extensions
                 {
                     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; // so that we can return parent-child elements
                 });
+
+            services.AddCors(c =>
+            {
+                c.AddPolicy("Default", options =>
+                {
+                    //options.WithOrigins("http://localhost:4200");
+                    options
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
         }
 
         public static void AddConfiguration(this IServiceCollection services, IConfiguration configuration)
