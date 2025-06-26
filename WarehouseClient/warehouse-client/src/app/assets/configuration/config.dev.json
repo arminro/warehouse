@@ -1,0 +1,9 @@
+{
+    "env": {
+    "name": "DEV"
+     },
+    "apiServer": {
+      "baseUrl": "http://localhost:5144/api",
+      "mainSegment" : "WarehouseManagement"
+    }
+}

@@ -1,0 +1,43 @@
+.component-type-list-container {
+  padding: 1rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.type-card {
+  margin-top: 0.5rem;
+  background-color: #fafafa;
+  border-radius: 8px;
+}
+
+.component-sublist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.component-scrollable-list {
+  max-height: 120px;
+  overflow-y: auto;
+  margin-top: 0.5rem;
+  padding: 0.25rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.snackbar-success {
+  background-color: #4caf50; /* Material green */
+  color: white;
+}
+
+.snackbar-error {
+  background-color: #d32f2f; /* Material red */
+  color: white;
+}

@@ -1,0 +1,35 @@
+<mat-card class="stats-summary">
+  <mat-card-title>Warehouse Summary</mat-card-title>
+  <mat-card-content>
+    <p><strong>Total Mass:</strong> {{ stats?.totalMassInGrams | number }} g</p>
+    <p><strong>Total Value:</strong> {{ stats?.totalValueInHungarianForints | number }} Ft / {{ stats?.totalValueInEuros | number:'1.2-2' }} €</p>
+  </mat-card-content>
+</mat-card>
+
+<div class="stats-products">
+  <!-- Heaviest Product -->
+  <mat-card class="product-card">
+    <mat-card-header>
+      <mat-card-title>Heaviest Product</mat-card-title>
+      <mat-card-subtitle>{{ stats?.heaviestProduct?.name }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p><strong>Description:</strong> {{ stats?.heaviestProduct?.description }}</p>
+      <p><strong>Mass:</strong> {{ stats?.heaviestProduct?.massInGrams }} g</p>
+      <p><strong>Price:</strong> {{ stats?.heaviestProduct?.priceInHungarianForints }} Ft / {{ stats?.heaviestProduct?.priceInEuros }} €</p>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Product with Largest Value Sum -->
+  <mat-card class="product-card">
+    <mat-card-header>
+      <mat-card-title>Most Valuable Product</mat-card-title>
+      <mat-card-subtitle>{{ stats?.productWithLargestSum?.name }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p><strong>Description:</strong> {{ stats?.productWithLargestSum?.description }}</p>
+      <p><strong>Mass:</strong> {{ stats?.productWithLargestSum?.massInGrams }} g</p>
+      <p><strong>Price:</strong> {{ stats?.productWithLargestSum?.priceInHungarianForints }} Ft / {{ stats?.productWithLargestSum?.priceInEuros }} €</p>
+    </mat-card-content>
+  </mat-card>
+</div>

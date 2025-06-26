@@ -1,0 +1,19 @@
+<mat-toolbar color="primary" class="navbar">
+  <!-- Logo or App Title -->
+  <span class="logo">Warehouse Manager</span>
+
+  <!-- Spacer -->
+  <span class="spacer"></span>
+
+  <!-- Navigation Links -->
+  <a mat-button routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+    Home
+  </a>
+  <a mat-button routerLink="/stat" routerLinkActive="active-link">
+    Warehouse Statistics
+  </a>
+  <a mat-button routerLink="/events" routerLinkActive="active-link">
+    Warehouse Events
+  </a>
+</mat-toolbar>
+<router-outlet></router-outlet>

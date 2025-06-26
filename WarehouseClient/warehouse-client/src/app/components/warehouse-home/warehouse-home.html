@@ -1,0 +1,67 @@
+<div class="component-type-list-container">
+  <div class="header">
+    <h2>📦 Component Types</h2>
+    <button mat-raised-button color="primary" (click)="addComponentType()">
+      <mat-icon>add</mat-icon> Add Component Type
+    </button>
+  </div>
+
+  <mat-accordion multi>
+    <mat-expansion-panel *ngFor="let type of catalog">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ type.name }}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ type.massInGrams }}g | {{ type.priceInHungarianForints }} Ft / {{ type.priceInEuros }} €
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-card class="type-card">
+        <mat-card-content>
+          <p><strong>Description:</strong> {{ type.description }}</p>
+          <p><strong>Mass:</strong> {{ type.massInGrams }} g</p>
+          <p><strong>Price:</strong> {{ type.priceInHungarianForints }} Ft / {{ type.priceInEuros }} €</p>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button mat-icon-button color="primary" (click)="editComponentType(type)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteComponentType(type)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-actions>
+
+        <div class="component-sublist-header">
+          <h4>🔩 Components</h4>
+          <button mat-mini-button color="accent" (click)="addComponent(type)">
+            <mat-icon>add</mat-icon> Add Component
+          </button>
+        </div>
+
+        <div class="component-scrollable-list">
+          <mat-chip-listbox>
+            <mat-chip *ngFor="let comp of type.components" removable (removed)="deleteComponent(type, comp)">
+              {{ comp.catalogId }}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+          </mat-chip-listbox>
+        </div>
+      </mat-card>
+    </mat-expansion-panel>
+    <mat-paginator
+    [length]="totalNumber"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[2, 3, 10]"
+    (page)="onPageChange($event)">
+  </mat-paginator>
+  </mat-accordion>
+</div>
+
+
+
+
+
+
+

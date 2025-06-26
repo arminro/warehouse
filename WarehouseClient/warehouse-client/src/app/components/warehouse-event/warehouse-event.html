@@ -1,0 +1,63 @@
+<div class="warehouse-lists-container">
+  <!-- Incoming List -->
+  <div class="warehouse-list">
+    <h2 class="list-header">Incoming Changes</h2>
+    <div class="scrollable-list">
+      <mat-card *ngFor="let change of incoming" class="change-card">
+        <mat-card-content>
+          <p><strong>Timestamp:</strong> {{ change.changeTimestamp | date:'short' }}</p>
+
+          <!-- ComponentType Template -->
+          <ng-container *ngIf="change.componentTypeChanged">
+            <p><strong>Type Name:</strong> {{ change.componentTypeChanged.name }}</p>
+            <p><strong>Description:</strong> {{ change.componentTypeChanged.description }}</p>
+            <p><strong>Mass:</strong> {{ change.componentTypeChanged.massInGrams }} g</p>
+            <p><strong>Price:</strong> {{ change.componentTypeChanged.priceInHungarianForints }} Ft</p>
+          </ng-container>
+
+          <!-- Component Template -->
+          <ng-container *ngIf="change.componentChanged">
+            <p><strong>Component Catalog ID:</strong> {{ change.componentChanged.catalogId }}</p>
+          </ng-container>
+        </mat-card-content>     
+      </mat-card>
+         <mat-paginator
+                [length]="totalNumberIn"
+                [pageSize]="pageSizeIn"
+                [pageSizeOptions]="[2, 3, 10]"
+                (page)="onPageChangeIn($event)">
+            </mat-paginator>
+    </div>
+  </div>
+
+  <!-- Outgoing List -->
+  <div class="warehouse-list">
+    <h2 class="list-header">Outgoing Changes</h2>
+    <div class="scrollable-list">
+      <mat-card *ngFor="let change of outgoing" class="change-card">
+        <mat-card-content>
+          <p><strong>Timestamp:</strong> {{ change.changeTimestamp | date:'short' }}</p>
+
+          <!-- ComponentType Template -->
+          <ng-container *ngIf="change.componentTypeChanged">
+            <p><strong>Type Name:</strong> {{ change.componentTypeChanged.name }}</p>
+            <p><strong>Description:</strong> {{ change.componentTypeChanged.description }}</p>
+            <p><strong>Mass:</strong> {{ change.componentTypeChanged.massInGrams }} g</p>
+            <p><strong>Price:</strong> {{ change.componentTypeChanged.priceInHungarianForints }} Ft</p>
+          </ng-container>
+
+          <!-- Component Template -->
+          <ng-container *ngIf="change.componentChanged">
+            <p><strong>Component Catalog ID:</strong> {{ change.componentChanged.catalogId }}</p>
+          </ng-container>
+        </mat-card-content>        
+      </mat-card>
+       <mat-paginator
+                [length]="totalNumberOut"
+                [pageSize]="pageSizeOut"
+                [pageSizeOptions]="[2, 3, 10]"
+                (page)="onPageChangeOut($event)">
+            </mat-paginator>
+    </div>
+  </div>
+</div>

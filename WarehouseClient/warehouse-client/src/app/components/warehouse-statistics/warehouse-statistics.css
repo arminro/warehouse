@@ -1,0 +1,17 @@
+.stats-summary {
+  margin: 2rem 0;
+  padding: 1rem;
+  border-radius: 12px;
+}
+
+.stats-products {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.product-card {
+  flex: 1 1 300px;
+  border-radius: 10px;
+}
