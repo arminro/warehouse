@@ -29,7 +29,8 @@ namespace Warehouse.Service.Implementations
              .SumAsync(e => e.MassInGrams * e.Components.Count);
 
             var sumOfValue = await elements
-                .SumAsync(e => e.PriceInHungarianForints * e.Components.Count);
+                .SumAsync(e =>
+                    (e.PriceInHungarianForints * e.Components.Count) > 0 ? e.PriceInHungarianForints * e.Components.Count : e.PriceInHungarianForints); // numerosity counts, component types with no components count as 1
 
 
             var mostNumerousComponentType = await elements
@@ -38,7 +39,7 @@ namespace Warehouse.Service.Implementations
 
             var heaviestComponentType = await elements
                 .OrderByDescending(ct => ct.MassInGrams)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(); // numerosity does not count here
 
 
             var rates = await _currencyExchangeService
