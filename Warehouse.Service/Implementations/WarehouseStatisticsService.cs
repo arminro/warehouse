@@ -21,32 +21,24 @@ namespace Warehouse.Service.Implementations
 
         public async Task<WarehouseStatisticsResponseDto> GetWarehouseStatisticsAsync()
         {
-            var elements = _componentRepo
-             .GetMultipleReadOnly()
-             .Include(e => e.ComponentType);
+            var elements = _componentTypeRepo
+                .GetMultipleReadOnly()
+                .Include(e => e.Components);
 
             var sumOfMass = await elements
-             .SumAsync(e => e.ComponentType.MassInGrams);
+             .SumAsync(e => e.MassInGrams * e.Components.Count);
 
             var sumOfValue = await elements
-                .SumAsync(e => e.ComponentType.PriceInHungarianForints * e.ComponentType.Components.Count());
-
-            var componentTypeGrouping = elements
-                .GroupBy(e => e.ComponentType);
+                .SumAsync(e => e.PriceInHungarianForints * e.Components.Count);
 
 
-            var mostNumerousComponentType = await componentTypeGrouping
-                .Select(g => new { g.Key, Count = g.Count() })
-                .OrderByDescending(g => g.Count)
-                .Select(g => g.Key)
+            var mostNumerousComponentType = await elements
+                .OrderByDescending(g => g.Components.Count)
                 .FirstOrDefaultAsync();
 
-
-            var heaviestComponentType = await componentTypeGrouping
-                .OrderByDescending(ct => ct.Key.MassInGrams)
-                .Select(ct => ct.Key)
+            var heaviestComponentType = await elements
+                .OrderByDescending(ct => ct.MassInGrams)
                 .FirstOrDefaultAsync();
-
 
 
             var rates = await _currencyExchangeService
