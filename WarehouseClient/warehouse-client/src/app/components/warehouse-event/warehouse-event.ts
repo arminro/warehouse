@@ -13,9 +13,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
   styleUrl: './warehouse-event.css'
 })
 export class WarehouseEvent {
-  /**
-   *
-   */
+
   constructor(private readonly service: WarehouseStateService) { }
 
   incoming: WarehouseStateChanged[] = [];
@@ -48,16 +46,16 @@ export class WarehouseEvent {
           });
   }
 
-  onPageChangeIn(event: PageEvent) {
-  this.pageNumberIn = event.pageIndex + 1; 
-  this.pageSizeIn = event.pageSize;
+  onPageChangeIn(inEvent: PageEvent) {
+  this.pageNumberIn = inEvent.pageIndex + 1; 
+  this.pageSizeIn = inEvent.pageSize;
 
   this.refresh();           
 }
 
-  onPageChangeOut(event: PageEvent) {
-  this.pageNumberOut = event.pageIndex + 1; 
-  this.pageSizeOut = event.pageSize;
+  onPageChangeOut(outEvent: PageEvent) {
+  this.pageNumberOut = outEvent.pageIndex + 1; 
+  this.pageSizeOut = outEvent.pageSize;
 
   this.refresh();           
 }
